@@ -18,6 +18,7 @@ public class BotMain {
         // 2) Arrancamos JDA y registramos el bot Listener
         JDA jda = JDABuilder.createDefault(token)
                 .addEventListeners(new BotListener())
+                .enableIntents(GatewayIntent.MESSAGE_CONTENT)
                 .build()
                 .awaitReady();
 
