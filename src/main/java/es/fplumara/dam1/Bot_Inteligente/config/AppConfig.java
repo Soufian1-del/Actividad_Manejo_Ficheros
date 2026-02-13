@@ -4,6 +4,7 @@ import es.fplumara.dam1.Bot_Inteligente.model.LogMode;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
@@ -25,11 +26,30 @@ public class AppConfig {
         }else{
             logsMode = LogMode.CSV;
         }
-        logsDir = props.getProperty("logsDir");
+        logsDir = props.getProperty("logsDir", "data/logs");
         logsMaxMessageLength = Integer.parseInt(props.getProperty("logsMaxMessageLength"));
+
+        //Loader y Saver
+        props.load(in); //Loader
+
+        Files.createDirectories(path.getParent());
+        try (OutputStream out = Files.newOutputStream(path)) {
+            props.store(out, "Configuracion de la aplicacion");
+        }//Saver
     }
 
+
+
     //getters y setters
+
+    public String getLogsDir() {
+        return logsDir;
+    }
+
+    public void setLogsDir(String logsDir) {
+        this.logsDir = logsDir;
+    }
+
     public boolean isLogsEnabled() {
         return logsEnabled;
     }
